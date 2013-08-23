@@ -40,7 +40,7 @@ def print_calendar():
             if day == today:
                 formatted_days.append("{end}{start}{day}{end}".format(
                     start=ANSI.TODAY,
-                    day=_format_day(day),
+                    day=str(day).rjust(2),
                     end=ANSI.END,
                 ))
                 first_day = False
@@ -49,10 +49,10 @@ def print_calendar():
                     first_day = False
                     formatted_days.append("{start}{day}".format(
                         start=ANSI.PAST,
-                        day=_format_day(day),
+                        day=str(day).rjust(2),
                     ))
                 else:
-                    formatted_days.append(_format_day(day))
+                    formatted_days.append(str(day).rjust(2))
         print("{line}".format(line=_format_line(formatted_days)))
 
 
@@ -90,15 +90,6 @@ def _format_line(line):
         return " ".join(line)
 
 
-def _format_day(day):
-    """Dates < 10 should have a leading space."""
-
-    if int(day) < 10:
-        return " {day}".format(day=day)
-    else:
-        return str(day)
-
-
 def _get_last_days_of_last_month(line):
     """Fill in leading whitespace with ansi-formatted dates from last month."""
 
@@ -112,7 +103,7 @@ def _get_last_days_of_last_month(line):
         else:
             line.insert(0, "{start}{date}{end}".format(
                 start=ANSI.OTHERMONTH,
-                date=_format_day(day),
+                date=str(day).rjust(2),
                 end=ANSI.END,
             ))
         finally:
@@ -128,7 +119,7 @@ def _get_next_days_of_next_month(line):
         day += 1
         line.append("{start}{date}{end}".format(
             start=ANSI.OTHERMONTH,
-            date=_format_day(day),
+            date=str(day).rjust(2),
             end=ANSI.END,
         ))
     return line
