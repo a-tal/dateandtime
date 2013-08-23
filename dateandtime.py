@@ -72,7 +72,6 @@ def _format_line(line):
         ending_days = ["28", "29", "30", "31"]
         for day in line:
             for ending_day in ending_days:
-                # import pdb; pdb.set_trace()
                 if ending_day == day:
                     first_week = False
                 elif day.endswith("{}{}".format(ending_day, ANSI.END)):
