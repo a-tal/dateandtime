@@ -5,6 +5,7 @@
 """A little clock to tell the date & time."""
 
 
+import os
 import sys
 import time
 import datetime
@@ -94,9 +95,12 @@ def _get_last_days_of_last_month(line):
 
     now = datetime.datetime.now()
     day = 31
+
+    lastmonth = now.month - 1 or 12
+    lastmonthyear = now.year - (now.month - 1 == 0)
     while len(line) < 7:
         try:
-            datetime.datetime(year=now.year, month=(now.month - 1), day=day)
+            datetime.datetime(year=lastmonthyear, month=lastmonth, day=day)
         except ValueError:
             pass
         else:
@@ -187,7 +191,10 @@ def be_a_clock():
 
 
 if __name__ == "__main__":
+    os.system("setterm -cursor off")
     try:
         be_a_clock()
     except KeyboardInterrupt:
         raise SystemExit("\n")
+    finally:
+        os.system("setterm -cursor on")
