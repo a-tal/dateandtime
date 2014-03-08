@@ -3,11 +3,6 @@
 
 import sys
 
-try:
-    from ddate.base import DDate
-except ImportError:
-    pass  # optional, Discordianism support. see https://github.com/a-tal/ddate
-
 from dateandtime import ANSI
 from dateandtime.time_formats import (
     calendar_header,
@@ -73,7 +68,7 @@ def print_calendar(discordian=False, eve_is_real=False, eve_game=False):
                     ))
                 else:
                     formatted_days.append(str(day).rjust(2))
-        print("{line}".format(line=_format_line(formatted_days, discordian)))
+        print("{line}".format(line=format_line(formatted_days, discordian)))
 
 
 def print_time(now, discordian=False):
@@ -100,7 +95,7 @@ def print_time(now, discordian=False):
     sys.stdout.flush()
 
 
-def _format_line(line, discordian=False):
+def format_line(line, discordian=False):
     """For a line of a calendar, replace any whitespace with the next or
     previous month's dates.
 

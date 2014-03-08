@@ -1,13 +1,9 @@
 """Support for different calendaring methods."""
 
 
-import datetime
 import calendar
-
-try:
-    from ddate.base import DDate
-except ImportError:
-    pass  # optional, Discordianism support. see https://github.com/a-tal/ddate
+import datetime
+from ddate.base import DDate
 
 from dateandtime import ANSI
 
