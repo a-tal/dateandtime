@@ -7,3 +7,14 @@ dateandtime
 [![Downloads this month](https://pypip.in/d/dateandtime/badge.png)](https://pypi.python.org/pypi/dateandtime/)
 
 Silly little text calendar/date application for tmux/screen sessions
+
+
+Install
+-------
+
+    $ git clone https://github.com/a-tal/dateandtime
+    $ cd dateandtime
+    $ python setup.py build
+    $ sudo python setup.py install
+
+Also available through pip or easyinstall.
