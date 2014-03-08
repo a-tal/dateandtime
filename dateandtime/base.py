@@ -67,7 +67,7 @@ def parse_args(args=None):
         ("eve_is_real", ["-r", "--eve-is-real", "--eve-real"]),
     ]
 
-    requested = {cal: False for cal, _ in possible_args}
+    requested = dict((cal, False) for cal, _ in possible_args)
 
     for arg in args or []:
         for calendar, arg_flags in possible_args:
