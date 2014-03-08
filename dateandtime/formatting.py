@@ -4,7 +4,7 @@
 import sys
 
 try:
-    from ddate import DDate
+    from ddate.base import DDate
 except ImportError:
     pass  # optional, Discordianism support. see https://github.com/a-tal/ddate
 
