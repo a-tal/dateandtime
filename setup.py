@@ -20,6 +20,8 @@ setup(
         "please open a GitHub issue."
     ),
     download_url="https://github.com/a-tal/dateandtime",
+    tests_require=['nose'],
+    test_suite='nose.collector',
     license="BSD",
     classifiers=[
         "Development Status :: 5 - Production/Stable",
