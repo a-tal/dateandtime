@@ -21,7 +21,8 @@ class ArgumentParsingTests(unittest.TestCase):
         self.defaults = {
             "discordian": False,
             "eve_game": False,
-            "eve_is_real": False,
+            "eve_real": False,
+            "help": False,
         }
 
     def tearDown(self):
@@ -80,7 +81,7 @@ class ArgumentParsingTests(unittest.TestCase):
 
         expected = (
             "Please limit yourself to a single calendar.\nI cannot display "
-            "discordian, eve game and eve is real at the same time :("
+            "discordian, eve game and eve real at the same time :("
         )
         self.assertEqual(error_message, expected)
 
@@ -98,7 +99,7 @@ class ArgumentParsingTests(unittest.TestCase):
 
         expected = (
             "Please limit yourself to a single calendar.\nI cannot display "
-            "discordian and eve is real at the same time :/"
+            "discordian and eve real at the same time :/"
         )
         self.assertEqual(error_message, expected)
 
@@ -116,7 +117,27 @@ class ArgumentParsingTests(unittest.TestCase):
 
         expected = (
             "Please limit yourself to a single calendar.\nI cannot display "
-            "eve game and eve is real at the same time :/"
+            "eve game and eve real at the same time :/"
+        )
+        self.assertEqual(error_message, expected)
+
+    def test_help_message(self):
+        """Ensure the test message looks correct."""
+
+        args = ["dateandtime", "-h"]
+        with self.assertRaises(SystemExit) as error:
+            parse_args(args)
+
+        if sys.version_info < (3,):
+            error_message = error.exception.message.strip()
+        else:
+            error_message = error.exception.code.strip()
+
+        expected = (
+             "Dateandtime usage:\n  dateandtime [calendar] [-h/--help]\n"
+            "Alternate calendars (usage flags):\n  Discordian: [-d, --discord,"
+            " --discordian, --discordianism]\n  Eve (game): [-e, --eve, --eve-"
+            "game]\n  Eve (real): [-r, --eve-real, --eve-is-real]"
         )
         self.assertEqual(error_message, expected)
 

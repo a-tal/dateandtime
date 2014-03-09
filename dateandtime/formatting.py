@@ -19,12 +19,12 @@ def print_spaces():
         print("{newlines}".format(newlines="\n" * 10))
 
 
-def print_calendar(discordian=False, eve_is_real=False, eve_game=False):
+def print_calendar(discordian=False, eve_real=False, eve_game=False):
     """Prints the calendar, highlights the day."""
 
     this_month, date = get_calendar(discordian)
 
-    if eve_is_real:
+    if eve_real:
         year = 23236 + (date.year - 1900)
     elif eve_game:
         year = "YC {0}".format(date.year - 1900)

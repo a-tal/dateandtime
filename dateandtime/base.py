@@ -10,7 +10,7 @@ import datetime
 from dateandtime.formatting import print_calendar, print_spaces, print_time
 
 
-def be_a_clock(discordian=False, eve_is_real=False, eve_game=False):
+def be_a_clock(discordian=False, eve_real=False, eve_game=False):
     """Displays a calendar with the day highlighted, a blank line and the time
     of day. Will loop forever. Sends many blank lines during a day change to
     badly update the highlighted day.
@@ -38,7 +38,7 @@ def be_a_clock(discordian=False, eve_is_real=False, eve_game=False):
         starting_time = datetime.datetime.now()
         running_time = starting_time
         print_spaces()
-        print_calendar(discordian, eve_is_real, eve_game)
+        print_calendar(discordian, eve_real, eve_game)
         sys.stdout.write("\n")
         while starting_time.day == running_time.day:
             print_time(running_time, discordian)
@@ -64,7 +64,8 @@ def parse_args(args=None):
     possible_args = [
         ("discordian", ["-d", "--discord", "--discordian", "--discordianism"]),
         ("eve_game", ["-e", "--eve", "--eve-game"]),
-        ("eve_is_real", ["-r", "--eve-is-real", "--eve-real"]),
+        ("eve_real", ["-r", "--eve-real", "--eve-is-real"]),
+        ("help", ["-h", "--help"]),
     ]
 
     requested = dict((cal, False) for cal, _ in possible_args)
@@ -73,6 +74,25 @@ def parse_args(args=None):
         for calendar, arg_flags in possible_args:
             if arg in arg_flags:
                 requested[calendar] = True
+
+    if requested["help"]:
+        raise SystemExit((
+            "Dateandtime usage:\n  dateandtime [calendar] [-h/--help]\n"
+            "Alternate calendars (usage flags):\n  {0}".format(
+                "\n  ".join(
+                    "{0}{1}{2}{3}: [{4}]".format(
+                        name.split("_")[0].title(),
+                        " (" * int("_" in name),
+                        " ".join(name.split("_")[1:]),
+                        ")" * int("_" in name),
+                        ", ".join(flags),
+                    )
+                    for name, flags in possible_args[:-1]
+                )
+            )
+        ))
+
+    requested.pop("help")
 
     if sum(requested.values()) > 1:
         requested_cals = [
