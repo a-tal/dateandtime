@@ -22,7 +22,6 @@ class ArgumentParsingTests(unittest.TestCase):
             "discordian": False,
             "eve_game": False,
             "eve_real": False,
-            "help": False,
         }
 
     def tearDown(self):
