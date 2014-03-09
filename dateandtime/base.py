@@ -92,8 +92,6 @@ def parse_args(args=None):
             )
         ))
 
-    requested.pop("help")
-
     if sum(requested.values()) > 1:
         requested_cals = [
             cal.replace("_", " ") for cal, _ in possible_args if requested[cal]
@@ -107,4 +105,5 @@ def parse_args(args=None):
             ":/" if len(requested_cals) < 3 else ":(",
         ))
 
+    requested.pop("help")
     return requested
