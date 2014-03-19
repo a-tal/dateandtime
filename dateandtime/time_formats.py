@@ -55,19 +55,21 @@ def discordian_calendar(date):
     weeks = []
     first_week = True
 
-    for week in range(1, 73, 5):
+    start_day = first_day_of_season.day_of_week
+    for week in range(1, 77, 5):
         if first_week:
-            weeks.append("{0}{1}{2}".format(
-                "  " * first_day_of_season.day_of_week,
-                str(first_day_of_season.day_of_week + 1).rjust(2, " "),
+            weeks.append("{0}{1}".format(
+                "  " * start_day,
                 " ".join([str(x).rjust(2, " ") for x in range(
-                    2, first_day_of_season.day_of_week + 6)]
+                    1, 6 - start_day)]
                 ),
             ))
             first_week = False
         else:
             weeks.append(" ".join(
-                [str(x) for x in range(week, min(week + 5, 74))]))
+                [str(x) for x in range(
+                    week - start_day, min((week - start_day) + 5, 74))]
+            ))
 
     return weeks
 
