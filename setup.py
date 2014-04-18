@@ -42,7 +42,8 @@ setup(
         "please open a GitHub issue."
     ),
     download_url="https://github.com/a-tal/dateandtime",
-    tests_require=["pytest", "pytest-cov"],
+    install_requires=["ddate>=0.0.4"],
+    tests_require=["pytest", "pytest-cov", "mock"],
     cmdclass={"test": PyTest},
     license="BSD",
     classifiers=[

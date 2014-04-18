@@ -1,6 +1,7 @@
 """Tests for dateandtime's multicalendar object."""
 
 
+import sys
 import pytest
 import datetime
 from mock import patch
@@ -173,7 +174,8 @@ def test_print_time(cal, capfd):
         now.strftime("%p").lower(),
     )
     assert time_should_be in out
-    assert out[0] == "\r"
+    if sys.version_info < (3, ):
+        assert out[0] == "\r"
     assert len(out) == cal.max_width + 1  # len() +1 for the carrage return
     assert out[-1] == " "  # don't end with a newline...
 

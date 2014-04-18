@@ -62,7 +62,7 @@ def test_three_raise_content():
         "Please limit yourself to a single calendar.\nI cannot display "
         "discordian, eve game and eve real at the same time :("
     )
-    assert expected == error.value.message
+    assert expected == error.value.args[0]
 
 
 def test_two_raise_content():
@@ -75,7 +75,7 @@ def test_two_raise_content():
         "Please limit yourself to a single calendar.\nI cannot display "
         "discordian and eve real at the same time :/"
     )
-    assert expected == error.value.message
+    assert expected == error.value.args[0]
 
 
 def test_two_raise_content_two():
@@ -88,7 +88,7 @@ def test_two_raise_content_two():
         "Please limit yourself to a single calendar.\nI cannot display "
         "eve game and eve real at the same time :/"
     )
-    assert expected == error.value.message
+    assert expected == error.value.args[0]
 
 
 def test_help_message():
@@ -103,7 +103,7 @@ def test_help_message():
         " --discordian, --discordianism]\n  Eve (game): [-e, --eve, --eve-"
         "game]\n  Eve (real): [-r, --eve-real, --eve-is-real]"
     )
-    assert expected == error.value.message
+    assert expected == error.value.args[0]
 
 
 def test_be_a_clock_calls():
