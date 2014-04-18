@@ -1,51 +1,32 @@
-#coding: utf-8
-
 """A little clock to tell the date & time."""
 
 
-import sys
 import time
 import datetime
 
-from dateandtime.formatting import print_calendar, print_spaces, print_time
+from dateandtime.multicalendar import MultiCalendar
 
 
-def be_a_clock(discordian=False, eve_real=False, eve_game=False):
+def be_a_clock(discordian=False, eve_real=False, eve_game=False, test=False):
     """Displays a calendar with the day highlighted, a blank line and the time
     of day. Will loop forever. Sends many blank lines during a day change to
     badly update the highlighted day.
-
-    ░░░░░░░░░░░░▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄░░░░░░░░░░░░░
-    ░░░░░▄▄▄▄█▀▀▀░░░░░░░░░░░░▀▀██░░░░░░░░░░░
-    ░░▄███▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄█▄▄▄░░░░░░░
-    ▄▀▀░█░░░░▀█▄▀▄▀██████░▀█▄▀▄▀████▀░░░░░░░
-    █░░░█░░░░░░▀█▄█▄███▀░░░░▀▀▀▀▀▀▀░▀▀▄░░░░░
-    █░░░█░▄▄▄░░░░░░░░░░░░░░░░░░░░░▀▀░░░█░░░░
-    █░░░▀█░░█░░░░▄░░░░▄░░░░░▀███▀░░░░░░░█░░░
-    █░░░░█░░▀▄░░░░░░▄░░░░░░░░░█░░░░░░░░█▀▄░░
-    ░▀▄▄▀░░░░░▀▀▄▄▄░░░░░░░▄▄▄▀░▀▄▄▄▄▄▀▀░░█░░
-    ░█▄░░░░░░░░░░░░▀▀▀▀▀▀▀░░░░░░░░░░░░░░█░░░
-    ░░█░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░▄██░░░░
-    ░░▀█▄░░░░░░░░░░░░░░░░░░░░░░░░░▄▀▀░░░▀█░░
-    ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
-    █▀▄░█▀▀░█▀█░█░░░░█░▄░█░█░▀█▀░█░█░░█░▀█▀░
-    █░█░█▀▀░█▀█░█░░░░▀▄▀▄▀░█░░█░░█▀█░░█░░█░░
-    ▀▀░░▀▀▀░▀░▀░▀▀▀░░░▀░▀░░▀░░▀░░▀░▀░░▀░░▀░░
-    ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
     """
 
     while True:
         starting_time = datetime.datetime.now()
         running_time = starting_time
-        print_spaces()
-        print_calendar(discordian, eve_real, eve_game)
-        sys.stdout.write("\n")
+        calendar = MultiCalendar(discordian, eve_real, eve_game)
+        calendar.print_spaces()
+        calendar.print_calendar()
         while starting_time.day == running_time.day:
-            print_time(running_time, discordian)
+            calendar.print_time(running_time)
             printed_time = running_time
             while printed_time.minute == running_time.minute:
                 running_time = datetime.datetime.now()
                 time.sleep(1)
+                if test:
+                    return  # short circut to make this function testable
 
 
 def parse_args(args=None):
