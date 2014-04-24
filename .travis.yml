@@ -12,7 +12,7 @@ before_install:
   - pip install --upgrade pytest-cov
   - pip install --upgrade ddate
 
-script: "py.test -v -rf --cov-report term-missing --cov dateandtime"
+script: "python setup.py test"
 
 after_success:
   - coveralls
