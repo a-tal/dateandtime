@@ -8,7 +8,7 @@ dateandtime
 [![Version](https://pypip.in/v/dateandtime/badge.png)](https://pypi.python.org/pypi/dateandtime/)
 [![Downloads this month](https://pypip.in/d/dateandtime/badge.png)](https://pypi.python.org/pypi/dateandtime/)
 
-Silly little text calendar/date application for tmux/screen sessions
+Little text calendar/date application for tmux/screen sessions
 
 
 Install
