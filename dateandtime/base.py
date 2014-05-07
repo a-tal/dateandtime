@@ -1,7 +1,6 @@
 """A little clock to tell the date & time."""
 
 
-import sys
 import time
 import datetime
 
@@ -86,12 +85,6 @@ def parse_args(args=None):
             requested_cals[-1],
             ":/" if len(requested_cals) < 3 else ":(",
         ))
-
-    if sys.version_info > (4,):
-        print("unreachable code")
-        print("maybe now coveralls will notice")
-        print("that the test coverage has changed")
-        print("and actually update the project.")
 
     requested.pop("help")
     return requested
