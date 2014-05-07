@@ -7,15 +7,15 @@ import datetime
 from mock import patch
 
 from ddate.base import DDate
-from dateandtime.multicalendar import ANSI, MultiCalendar, calendar
+from dateandtime import multicalendar
 
 
 @pytest.fixture(
     params=[
-        MultiCalendar(),
-        MultiCalendar(discordian=True),
-        MultiCalendar(eve_game=True),
-        MultiCalendar(eve_real=True),
+        multicalendar.MultiCalendar(),
+        multicalendar.MultiCalendar(discordian=True),
+        multicalendar.MultiCalendar(eve_game=True),
+        multicalendar.MultiCalendar(eve_real=True),
     ],
     ids=["normal", "discordian", "eve_game", "eve_real"]
 )
@@ -28,9 +28,9 @@ def cal(request):
 def test_discordian_settings():
     """Verify settings for using Discordian calendar."""
 
-    with patch.object(MultiCalendar, "discordian_calendar") as patched_cal:
-        disco = MultiCalendar(discordian=True)
-    patched_cal.assert_called_once_with()
+    with patch.object(multicalendar, "discordian_calendar") as patched_cal:
+        disco = multicalendar.MultiCalendar(discordian=True)
+    patched_cal.assert_called_once_with(disco.date)
     assert disco.discordian
     assert disco.max_width == 14
     assert isinstance(disco.date, DDate)
@@ -46,8 +46,9 @@ def test_discordian_settings():
 def test_normal_settings():
     """Verify settings for normal calendar."""
 
-    with patch.object(calendar.TextCalendar, "formatmonth") as patched_cal:
-        normal = MultiCalendar()
+    patchcal = patch.object(multicalendar.calendar.TextCalendar, "formatmonth")
+    with patchcal as patched_cal:
+        normal = multicalendar.MultiCalendar()
     patched_cal.assert_called_once_with(normal.date.year, normal.date.month)
     assert isinstance(normal.date, datetime.datetime)
     assert normal.max_width == 20
@@ -64,7 +65,7 @@ def test_normal_settings():
 def test_eve_game_settings():
     """Verify settings for using the in game eve time."""
 
-    evegame = MultiCalendar(eve_game=True)
+    evegame = multicalendar.MultiCalendar(eve_game=True)
     assert isinstance(evegame.date, datetime.datetime)
     assert not evegame.discordian
     assert not evegame.eve_real
@@ -75,7 +76,7 @@ def test_eve_game_settings():
 def test_eve_real_settings():
     """Verify settings for using eve game time like it was real."""
 
-    evereal = MultiCalendar(eve_real=True)
+    evereal = multicalendar.MultiCalendar(eve_real=True)
     assert isinstance(evereal.date, datetime.datetime)
     assert not evereal.discordian
     assert evereal.eve_real
@@ -90,7 +91,7 @@ def test_print_calendar(cal, capfd):
     out, _ = capfd.readouterr()
     for line in out.splitlines():
         for setting in ["TODAY", "PAST", "OTHERMONTH", "END"]:
-            line = line.replace(getattr(ANSI, setting), "")
+            line = line.replace(getattr(multicalendar.ANSI, setting), "")
         if not line:
             continue
         assert len(line) == cal.max_width
@@ -156,7 +157,7 @@ def test_parse_out_ansi_end(cal):
     """Ensure we've accounted for the ANSI.END sequence."""
 
     preformat = ["5", "6", "7", "{0}{1}".format(
-        cal.ending_days[-1], ANSI.END)]
+        cal.ending_days[-1], multicalendar.ANSI.END)]
     with patch.object(cal, "get_next_days_of_next_month") as patch_next:
         cal.format_line(preformat)
     patch_next.assert_called_once_with(preformat)
@@ -183,15 +184,22 @@ def test_print_time(cal, capfd):
 def test_getting_last_days():
     """We should try from 31 down to get the last days of last month."""
 
-    cal = MultiCalendar()
+    def _ansi_wrapped(day):
+        return "{0}{1}{2}".format(
+            multicalendar.ANSI.OTHERMONTH,
+            day,
+            multicalendar.ANSI.END,
+        )
+
+    cal = multicalendar.MultiCalendar()
     fake_line = ["1", "2", "3"]
     march_first = datetime.datetime(2014, 3, 1)
     returned = cal.get_last_days_of_last_month(fake_line, march_first)
     expected = [
-        "{0}25{1}".format(ANSI.OTHERMONTH, ANSI.END),
-        "{0}26{1}".format(ANSI.OTHERMONTH, ANSI.END),
-        "{0}27{1}".format(ANSI.OTHERMONTH, ANSI.END),
-        "{0}28{1}".format(ANSI.OTHERMONTH, ANSI.END),
+        _ansi_wrapped(25),
+        _ansi_wrapped(26),
+        _ansi_wrapped(27),
+        _ansi_wrapped(28),
         "1",
         "2",
         "3",

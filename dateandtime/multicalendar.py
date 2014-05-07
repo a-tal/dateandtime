@@ -29,7 +29,7 @@ class MultiCalendar(object):
         if self.discordian:
             self.max_width = 14
             self.date = DDate()
-            self.calendar = self.discordian_calendar()
+            self.calendar = discordian_calendar(self.date)
             self.month = self.date.SEASONS[self.date.season]
             self.ending_days = ["70", "71", "72", "73"]
             self.day_of_month = self.date.day_of_season
@@ -191,34 +191,42 @@ class MultiCalendar(object):
                 day -= 1
         return line
 
-    def discordian_calendar(self):
-        """Simulate calendar.TextCalendar for discordian dates."""
 
-        first_day_of_season = DDate(
-            datetime.date(
-                year=self.date.date.year,
-                month=self.date.date.month,
-                day=self.date.date.day,
-            ) - datetime.timedelta(days=self.date.day_of_season - 1),
-        )
+def discordian_calendar(date):
+    """Simulate calendar.TextCalendar for discordian dates.
 
-        weeks = []
-        first_week = True
+    Args:
+        date: a DDate object
 
-        start_day = first_day_of_season.day_of_week
-        for week in range(1, 77, 5):
-            if first_week:
-                weeks.append("{0}{1}".format(
-                    "  " * start_day,
-                    " ".join([str(x).rjust(2, " ") for x in range(
-                        1, 6 - start_day)]
-                    ),
-                ))
-                first_week = False
-            else:
-                weeks.append(" ".join(
-                    [str(x) for x in range(
-                        week - start_day, min((week - start_day) + 5, 74))]
-                ))
+    Returns:
+        list of strings to make a calendar month
+    """
 
-        return weeks
+    first_day_of_season = DDate(
+        datetime.date(
+            year=date.date.year,
+            month=date.date.month,
+            day=date.date.day,
+        ) - datetime.timedelta(days=date.day_of_season - 1),
+    )
+
+    weeks = []
+    first_week = True
+
+    start_day = first_day_of_season.day_of_week
+    for week in range(1, 77, 5):
+        if first_week:
+            weeks.append("{0}{1}".format(
+                "  " * start_day,
+                " ".join([str(x).rjust(2, " ") for x in range(
+                    1, 6 - start_day)]
+                ),
+            ))
+            first_week = False
+        else:
+            weeks.append(" ".join(
+                [str(x) for x in range(
+                    week - start_day, min((week - start_day) + 5, 74))]
+            ))
+
+    return weeks
