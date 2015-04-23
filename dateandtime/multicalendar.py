@@ -42,8 +42,8 @@ class MultiCalendar(object):
             self.date = date or DDate()
             now = DDate()
             self.context = cmp(
-                int("{}{}".format(self.date.year, self.date.season)),
-                int("{}{}".format(now.year, now.season))
+                int("{0}{1}".format(self.date.year, self.date.season)),
+                int("{0}{1}".format(now.year, now.season))
             )
             self.calendar = discordian_calendar(self.date)
             self.month = self.date.SEASONS[self.date.season]
@@ -55,8 +55,8 @@ class MultiCalendar(object):
             now = datetime.datetime.now()
             self.date = date or now
             self.context = cmp(
-                int("{}{}".format(self.date.year, str(self.date.month).rjust(2, "0"))),
-                int("{}{}".format(now.year, str(now.month).rjust(2, "0"))),
+                int("{0}{1}".format(self.date.year, str(self.date.month).rjust(2, "0"))),
+                int("{0}{1}".format(now.year, str(now.month).rjust(2, "0"))),
             )
             self.month = self.date.strftime("%B")
             # start the week on Sunday
@@ -114,7 +114,7 @@ class MultiCalendar(object):
                         formatted_days.append(str(day).rjust(2))
             print("{line}".format(line=self.format_line(formatted_days)))
 
-        print("{}".format(ANSI.END))
+        print(ANSI.END)
 
     def print_spaces(self):
         """Prints a bunch of spaces..."""

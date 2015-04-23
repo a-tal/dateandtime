@@ -111,7 +111,7 @@ def test_long_tag_line(cal, capfd):
     cal.year = 1234
     cal.print_calendar()
     out, _ = capfd.readouterr()
-    expected = "{} {}".format(
+    expected = "{0} {1}".format(
         cal.month[:cal.max_width - len(str(cal.year)) - 1],
         cal.year,
     )
