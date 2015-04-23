@@ -18,6 +18,17 @@ class ANSI(object):
     END = "\033[0m"
 
 
+def cmp(first, second):
+    """Removed in newer pythons."""
+
+    if first == second:
+        return 0
+    elif first > second:
+        return 1
+    else:
+        return -1
+
+
 class MultiCalendar(object):
     """Prints multiple types of calendars."""
 
