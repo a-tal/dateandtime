@@ -21,14 +21,19 @@ class ANSI(object):
 class MultiCalendar(object):
     """Prints multiple types of calendars."""
 
-    def __init__(self, discordian=False, eve_real=False, eve_game=False):
+    def __init__(self, discordian=False, eve_real=False, eve_game=False, date=None):
         self.discordian = discordian
         self.eve_real = eve_real
         self.eve_game = eve_game
 
         if self.discordian:
             self.max_width = 14
-            self.date = DDate()
+            self.date = date or DDate()
+            now = DDate()
+            self.context = cmp(
+                int("{}{}".format(self.date.year, self.date.season)),
+                int("{}{}".format(now.year, now.season))
+            )
             self.calendar = discordian_calendar(self.date)
             self.month = self.date.SEASONS[self.date.season]
             self.ending_days = ["70", "71", "72", "73"]
@@ -36,7 +41,12 @@ class MultiCalendar(object):
             self.weekday_abbrs = [d[:2].title() for d in self.date.WEEKDAYS]
         else:
             self.max_width = 20
-            self.date = datetime.datetime.now()
+            now = datetime.datetime.now()
+            self.date = date or now
+            self.context = cmp(
+                int("{}{}".format(self.date.year, str(self.date.month).rjust(2, "0"))),
+                int("{}{}".format(now.year, str(now.month).rjust(2, "0"))),
+            )
             self.month = self.date.strftime("%B")
             # start the week on Sunday
             self.calendar = calendar.TextCalendar(6).formatmonth(
@@ -60,10 +70,13 @@ class MultiCalendar(object):
         tag_line = "{0} {1}".format(self.month, self.year)
 
         if len(tag_line) > self.max_width:
-            tag_line = "{0} {1}".format(
-                self.month[:3],
-                self.year,
-            )
+            end = (self.max_width - len(str(self.year)) - 1) - len(self.month)
+            if self.month.startswith("The "):
+                month_slice = slice(4, (end + 4) or None)
+            else:
+                month_slice = slice(0, end)
+
+            tag_line = "{0} {1}".format(self.month[month_slice], self.year)
 
         print(tag_line.center(self.max_width, " "))
         print(" ".join(self.weekday_abbrs))
@@ -72,7 +85,7 @@ class MultiCalendar(object):
         for line in self.calendar:
             formatted_days = []
             for day in line.split():
-                if int(day) == int(self.day_of_month):
+                if int(day) == int(self.day_of_month) and self.context == 0:
                     formatted_days.append("{end}{start}{day}{end}".format(
                         start=ANSI.TODAY,
                         day=str(day).rjust(2),
@@ -83,13 +96,14 @@ class MultiCalendar(object):
                     if first_day:
                         first_day = False
                         formatted_days.append("{start}{day}".format(
-                            start=ANSI.PAST,
+                            start=ANSI.END if self.context > 0 else ANSI.PAST,
                             day=str(day).rjust(2),
                         ))
                     else:
                         formatted_days.append(str(day).rjust(2))
             print("{line}".format(line=self.format_line(formatted_days)))
-        print("")
+
+        print("{}".format(ANSI.END))
 
     def print_spaces(self):
         """Prints a bunch of spaces..."""
@@ -158,7 +172,7 @@ class MultiCalendar(object):
             ))
         return line
 
-    def get_last_days_of_last_month(self, line, now=None):
+    def get_last_days_of_last_month(self, line):
         """Fill in leading whitespace with formatted dates from last month."""
 
         if self.discordian:
@@ -166,9 +180,8 @@ class MultiCalendar(object):
             max_len = 5
         else:
             day = 31
-            now = now or datetime.datetime.now()
-            lastmonth = now.month - 1 or 12
-            lastmonthyear = now.year - (now.month - 1 == 0)
+            lastmonth = self.date.month - 1 or 12
+            lastmonthyear = self.date.year - (self.date.month - 1 == 0)
             max_len = 7
 
         while len(line) < max_len:
@@ -224,9 +237,11 @@ def discordian_calendar(date):
             ))
             first_week = False
         else:
-            weeks.append(" ".join(
+            week_str = " ".join(
                 [str(x) for x in range(
                     week - start_day, min((week - start_day) + 5, 74))]
-            ))
+            )
+            if week_str:
+                weeks.append(week_str)
 
     return weeks
