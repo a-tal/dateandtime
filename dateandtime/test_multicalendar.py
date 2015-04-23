@@ -96,7 +96,7 @@ def test_print_calendar(cal, capfd):
             continue
         assert len(line) == cal.max_width
 
-    assert out.splitlines()[-1] == "", "should have a blank line at the end"
+    assert out.splitlines()[-1] == multicalendar.ANSI.END, "should be ANSI.END"
     assert " ".join(cal.weekday_abbrs) in out.splitlines()[1]
     tag_should_be = "{0} {1}".format(cal.month, cal.year)
     if len(tag_should_be) > cal.max_width:
@@ -111,7 +111,11 @@ def test_long_tag_line(cal, capfd):
     cal.year = 1234
     cal.print_calendar()
     out, _ = capfd.readouterr()
-    assert "Som 1234" in out
+    expected = "{} {}".format(
+        cal.month[:cal.max_width - len(str(cal.year)) - 1],
+        cal.year,
+    )
+    assert expected in out
 
 
 def test_print_spaces(cal, capfd):
@@ -191,10 +195,9 @@ def test_getting_last_days():
             multicalendar.ANSI.END,
         )
 
-    cal = multicalendar.MultiCalendar()
+    cal = multicalendar.MultiCalendar(date=datetime.datetime(2014, 3, 1))
     fake_line = ["1", "2", "3"]
-    march_first = datetime.datetime(2014, 3, 1)
-    returned = cal.get_last_days_of_last_month(fake_line, march_first)
+    returned = cal.get_last_days_of_last_month(fake_line)
     expected = [
         _ansi_wrapped(25),
         _ansi_wrapped(26),

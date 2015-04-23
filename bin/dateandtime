@@ -8,11 +8,14 @@ from dateandtime.base import be_a_clock, parse_args
 
 
 if __name__ == "__main__":
-    os.system("setterm -cursor off")
+    term_avail = os.system("which setterm") == 0
+    if term_avail:
+        os.system("setterm -cursor off")
 
     try:
         be_a_clock(**parse_args(sys.argv))
     except KeyboardInterrupt:
         raise SystemExit("\n")
     finally:
-        os.system("setterm -cursor on")
+        if term_avail:
+            os.system("setterm -cursor on")
