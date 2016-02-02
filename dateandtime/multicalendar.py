@@ -69,9 +69,9 @@ class MultiCalendar(object):
             self.weekday_abbrs = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"]
 
         if self.eve_real:
-            self.year = 23236 + (self.date.year - 1900)
+            self.year = 23236 + (self.date.year - 1898)
         elif self.eve_game:
-            self.year = "YC {0}".format(self.date.year - 1900)
+            self.year = "YC {0}".format(self.date.year - 1898)
         else:
             self.year = self.date.year
 
