@@ -70,7 +70,7 @@ def test_eve_game_settings():
     assert not evegame.discordian
     assert not evegame.eve_real
     assert evegame.eve_game
-    assert evegame.year == "YC {0}".format(evegame.date.year - 1900)
+    assert evegame.year == "YC {0}".format(evegame.date.year - 1898)
 
 
 def test_eve_real_settings():
@@ -81,7 +81,7 @@ def test_eve_real_settings():
     assert not evereal.discordian
     assert evereal.eve_real
     assert not evereal.eve_game
-    assert evereal.year == 23236 + (evereal.date.year - 1900)
+    assert evereal.year == 23236 + (evereal.date.year - 1898)
 
 
 def test_print_calendar(cal, capfd):
