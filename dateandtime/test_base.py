@@ -98,7 +98,7 @@ def test_help_message():
         parse_args(["dateandtime", "-h"])
 
     expected = (
-         "Dateandtime usage:\n  dateandtime [calendar] [-h/--help]\n"
+        "Dateandtime usage:\n  dateandtime [calendar] [-h/--help]\n"
         "Alternate calendars (usage flags):\n  Discordian: [-d, --discord,"
         " --discordian, --discordianism]\n  Eve (game): [-e, --eve, --eve-"
         "game]\n  Eve (real): [-r, --eve-real, --eve-is-real]"
@@ -110,9 +110,7 @@ def test_be_a_clock_calls():
     """Ensure the be_a_clock function is calling out correctly."""
 
     with patch.object(base, "MultiCalendar") as patched_cal:
-        with patch.object(MultiCalendar, "print_spaces") as patched_spaces:
-            with patch.object(MultiCalendar, "print_calendar") as patched_pcal:
-                be_a_clock(eve_real=True, test=True)
+        with patch.object(MultiCalendar, "print_calendar") as patched_pcal:
+            be_a_clock(eve_real=True, test=True)
     patched_cal.assert_called_once_with(False, True, False)
-    patched_spaces.assert_called_once()
     patched_pcal.assert_called_once()
