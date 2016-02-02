@@ -104,13 +104,3 @@ def test_help_message():
         "game]\n  Eve (real): [-r, --eve-real, --eve-is-real]"
     )
     assert expected == error.value.args[0]
-
-
-def test_be_a_clock_calls():
-    """Ensure the be_a_clock function is calling out correctly."""
-
-    with patch.object(base, "MultiCalendar") as patched_cal:
-        with patch.object(MultiCalendar, "print_calendar") as patched_pcal:
-            be_a_clock(eve_real=True, test=True)
-    patched_cal.assert_called_once_with(False, True, False)
-    patched_pcal.assert_called_once()
