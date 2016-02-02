@@ -1,6 +1,8 @@
 """A little clock to tell the date & time."""
 
 
+import os
+import sys
 import time
 import datetime
 
@@ -88,3 +90,19 @@ def parse_args(args=None):
 
     requested.pop("help")
     return requested
+
+
+def main():
+    """Command line entry point."""
+
+    term_avail = os.system("which setterm") == 0
+    if term_avail:
+        os.system("setterm -cursor off")
+
+    try:
+        be_a_clock(**parse_args(sys.argv))
+    except KeyboardInterrupt:
+        raise SystemExit("\n")
+    finally:
+        if term_avail:
+            os.system("setterm -cursor on")

@@ -28,11 +28,11 @@ class PyTest(TestCommand):
 
 setup(
     name="dateandtime",
-    version="0.0.6",
+    version="0.0.7",
     author="Adam Talsma",
     author_email="adam@talsma.ca",
     packages=["dateandtime"],
-    scripts=["bin/dateandtime"],
+    entry_points={"console_scripts": ["dateandtime = dateandtime.base:main"]},
     url="https://github.com/a-tal/dateandtime",
     description="A silly little text calendar application for your terminal",
     long_description=(
