@@ -6,7 +6,6 @@ dateandtime
 [![Stories in Backlog](https://badge.waffle.io/a-tal/dateandtime.png?label=ready&title=Backlog)](https://waffle.io/a-tal/dateandtime)
 [![Stories In Progress](https://badge.waffle.io/a-tal/dateandtime.png?label=ready&title=In+Progress)](https://waffle.io/a-tal/dateandtime)
 [![Version](https://img.shields.io/pypi/v/dateandtime.svg)](https://pypi.python.org/pypi/dateandtime/)
-[![Downloads this month](https://img.shields.io/pypi/dm/dateandtime.svg)](https://pypi.python.org/pypi/dateandtime/)
 
 Little text calendar/date application for tmux/screen sessions
 
